@@ -10,7 +10,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.common.alert import Alert
 from selenium.common.exceptions import NoAlertPresentException
 # --------------------------------------------------------------◿
-def accept_alert(web_driver : Chrome,
+def alert_handle(web_driver : Chrome,
                  search_time : float = 5) -> str:
     """
         Search for a Alert in WebDriver instace

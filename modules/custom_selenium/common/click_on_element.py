@@ -1,5 +1,5 @@
 """
-    Just a easy way to click on
+    Just a easy way to click on element
 """
 # ------------------------ IMPORTED LIBS -----------------------◹
 from selenium.webdriver.common.by import By
@@ -10,8 +10,8 @@ from selenium.webdriver import Chrome
 # --------------------------------------------------------------◿
 def easy_wait_and_click(web_driver : Chrome,
                         xpath : str,
-                        search_time : float = 5,
-                        greed : bool = False) -> None:
+                        greed : bool,
+                        search_time : float) -> None:
     """ 
         Wait for an element to appear and be clickable,
         after that clicks on the element
@@ -20,9 +20,9 @@ def easy_wait_and_click(web_driver : Chrome,
         web_driver (Chrome): WebDrive hook
         xpath (str): Element xath
         search_time (float, optional): How long the search time
-                                       needs to be. Defaults to 5.
+                                       needs to be.
         greed (bool, optional): Ignore overlapping elements that
-                                intercepted the click. Defaults to False.
+                                intercepted the click.
     """
     if not greed:
         WebDriverWait(web_driver, search_time).until(

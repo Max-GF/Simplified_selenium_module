@@ -10,8 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 def easy_wait_and_send_keys(web_driver : Chrome,
                             xpath  : str,
                             keys : str,
-                            clear: bool = True,
-                            search_time : float = 5) -> None:
+                            clear: bool,
+                            search_time : float) -> None:
     """
         Wait for an element to appear and be clickable,
         after which Selenium cleans the element, if necessary,

@@ -11,17 +11,22 @@ from selenium.webdriver import Chrome
 # ------------------------ LOCAL IMPORTS -----------------------◹
 from modules.custom_selenium.common.click_on_element import easy_wait_and_click
 # --------------------------------------------------------------◿
-def download(download_folder_path: str,
-             web_driver : Chrome,
+def download(web_driver : Chrome,
+             download_folder_path: str,
              download_xpath : str,
              file_extension : list[str],
-             search_time : float = 5)  -> str:
+             search_time : float)  -> str:
     """
         Click on download button, by the xpath in arguments,
         then wait it ends
 
     Args:
+        download_folder_path (str) : Folder where downloaded files will be save
+        web_driver (Chrome): WebDrive hook
         download_xpath (str): Web element xpath
+        file_extension (str): Wanted file extension
+        search_time (float, optional): How long the search time
+                                needs to be. Defaults to 5.
 
     Returns:
         str: last download path
@@ -29,6 +34,7 @@ def download(download_folder_path: str,
     previous_folder_state : list = os.listdir(download_folder_path)
     easy_wait_and_click(web_driver,
                         download_xpath,
+                        False,
                         search_time)
     after_folder_state : list = os.listdir(download_folder_path)
     while previous_folder_state == after_folder_state:
