@@ -13,6 +13,8 @@ from typing import Any
 # ------------------------ IMPORTED LIBS -----------------------◹
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import (NoSuchDriverException,
+                                        SessionNotCreatedException)
 from undetected_chromedriver import Chrome as UnChrome
 from undetected_chromedriver import ChromeOptions as UnChromeOptions
 # --------------------------------------------------------------◿
@@ -20,10 +22,11 @@ from undetected_chromedriver import ChromeOptions as UnChromeOptions
 from modules.custom_selenium.common import (easy_wait_and_send_keys,
                                             easy_wait_and_click,
                                             alert_handle,
-                                            download)
+                                            download,
+                                            update_chromedriver_to_last_stable_version)
 # --------------------------------------------------------------
 
-class SetupWebDriver:
+class CustomSelenium:
     """
         Configuration for a base selenium.
         Allows you to define the download path and the
@@ -39,6 +42,7 @@ class SetupWebDriver:
             os.mkdir(download_path)
         self.download_path   : str = download_path
         self.web_driver_path : str = web_driver_path
+        self.web_driver_folder_path : str = "\\".join(web_driver_path.split("\\")[:-1])
         self.headless : bool = headless or False
         self.undetected = undetected
         self.web_driver : Chrome = self.__config_and_start_a_webdriver()
@@ -79,14 +83,19 @@ class SetupWebDriver:
         options.add_argument("--silent")
         if self.headless:
             options.add_argument("--headless=new")
-        if self.undetected:
-            chrome = UnChrome(service=Service(executable_path=self.web_driver_path,
-                                              log_output='SELENIUM_LOGS'),
-                              options=options,
-                              driver_executable_path=self.web_driver_path)
-        else:
-            chrome = Chrome(service=Service(self.web_driver_path,log_output='SELENIUM_LOGS.txt'),
-                            options=options)
+        try:
+            if self.undetected:
+                chrome = UnChrome(service=Service(executable_path=self.web_driver_path,
+                                                  log_output='SELENIUM_LOGS.txt'),
+                                  options=options,
+                                  driver_executable_path=self.web_driver_path)
+            else:
+                chrome = Chrome(service=Service(self.web_driver_path,
+                                                log_output='SELENIUM_LOGS.txt'),
+                                options=options)
+        except (NoSuchDriverException,SessionNotCreatedException, OSError):
+            update_chromedriver_to_last_stable_version(self.web_driver_folder_path)
+            self.__config_and_start_a_webdriver()
         return chrome
 
     def accept_alert(self, search_time : float) -> str:

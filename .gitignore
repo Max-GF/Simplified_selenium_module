@@ -1,2 +1,6 @@
 venv
-SELENIUM_LOGS
+SELENIUM_LOGS.txt
+Downloads_selenium
+chrome_driver_folder
+**/__pycache__
+.env

@@ -68,6 +68,7 @@ def download_the_last_stable_version(version: str,
         file_path = os.path.join(download_folder_path, "chromedriver-win64.zip")
         with open(file_path, "wb") as f:
             f.write(response.content)
+        f.close()
         return file_path
     raise requests.exceptions.HTTPError("Unable to download the latest version of Chromedriver")
 
@@ -83,6 +84,7 @@ def extract_chromedriver_file_from_zip(chromedriver_zip_folder_path : str,
     with zipfile.ZipFile(chromedriver_zip_folder_path, 'r') as zip_ref:
         zip_ref.extract(member='chromedriver-win64/chromedriver.exe',
                         path=chromedriver_folder_path)
+    zip_ref.close()
     if os.path.exists(os.path.join(chromedriver_folder_path,'chromedriver.exe')):
         os.remove(os.path.join(chromedriver_folder_path,'chromedriver.exe'))
 
